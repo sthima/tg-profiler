@@ -2,36 +2,86 @@
 
 from __future__ import with_statement
 
+import os
 import gc
 import csv
+import sys
+import logging
+from time import sleep, time
 import threading
+from datetime import datetime
 
-from tg_adapter.sizeof import asized
+log = logging.getLogger(__name__)
 
 class TGProfiler(threading.Thread):
 
     def __init__(self, log_path, interval=60, rotation=10):
-           self.log_path = log_path
-           self.interval = interval
-           self.running = False
+        super(TGProfiler, self).__init__()
+        self.log_path = log_path
+        self.interval = interval
+        self.rotation = rotation
+        self.running = False
+        self.saved_logs = []
+
+    def log_file(self, ):
+        if not os.path.exists(self.log_path):
+            log.debug("Path %s doesn't exist, so let's create it"%self.log_path)
+            os.makedirs(self.log_path)
+            log.debug("Path %s created successfully"%self.log_path)
+        while len(self.saved_logs) >= self.rotation:
+            log.debug("Log rotation threshold achieved, let's remove ")
+            os.remove(self.saved_logs.pop(0))
+        log_filename = "tg_profiler.%s.csv"%datetime.now().strftime("%Y-%m-%dT%H:%M")
+        log_file_path = os.path.join(self.log_path, log_filename)
+        self.saved_logs.append(log_file_path)
+        return log_file_path
+
+    def profile_and_log(self):
+        objects = gc.get_objects()
+        log.info("Found %d garbage objects"%len(gc.garbage))
+        with open(self.log_file(), 'w') as log_file:
+            log.debug("%d objects found"%len(objects))
+            objects = filter(lambda r: hasattr(r, "__sizeof__"), objects)
+            log.debug("%d __sizeof__ filtered objects found"%len(objects))
+            objects = filter(lambda r: hasattr(r, "__name__"), objects)
+            log.debug("%d __name__ filtered objects found"%len(objects))
+            objects = filter(lambda r: hasattr(r, "__file__"), objects)
+            log.debug("%d __file__ filtered objects found"%len(objects))
+            log_writer = csv.writer(log_file)
+            log_writer.writerow([
+                "File",
+                "Object Name",
+                "Object Type",
+                "Size"
+            ])
+            for obj in objects:
+                try:
+                    obj_file = "unknown"
+                    if hasattr(obj, "__file__"):
+                        obj_file = obj.__file__
+                    size = sys.getsizeof(obj)
+                    log_writer.writerow([
+                        obj_file,
+                        obj.__name__,
+                        type(obj),
+                        size
+                    ])
+                except Exception, e:
+                    log.error(e)
 
     def run(self):
         self.running = True
         while self.running:
             try:
-                objects = gc.get_objects()
-                with open(self.log_file()) as log_file:
-                    log_writer = csv.writer(log_file)
-                    log_writer.writerow(["File", "Object Name", "Object Type", "Flat Size", "Total Size"])
-                    for obj in objects:
-                        obj_file = "unknown"
-                        if hasattr(obj, "__file__"):
-                            obj_file = obj.__file__
-                        asized_obj = asized(obj)
-
-                        log_writer.writerow([obj_file, asized_obj.name, type(obj), asized_obj.flat, asized_obj.total])
-            except:
-                pass
+                log.debug("Trying to profile the application")
+                l = time()
+                self.profile_and_log()
+                log.debug("Took: %d"%(time()-l))
+                log.debug("Profiled successfully, waiting until next time")
+            except Exception, e:
+                log.error(e)
+            finally:
+                sleep(self.interval)
 
     def stop(self, ):
         self.running = False
