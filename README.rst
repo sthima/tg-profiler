@@ -1,7 +1,7 @@
 TurboGears Profiler
 ===================
 
-TurboGears Profiler (tg_profiler) is a TurboGears 1 extension aiming to provide
+TurboGears Profiler (tg-profiler) is a TurboGears 1 extension aiming to provide
 better profiling options to TG applications. It focus on lightweight profiling
 which can be used in production environment, with very little overhead to the application.
 
@@ -13,7 +13,7 @@ Installation
 
 .. code-block:: bash
 
-    $ pip install tg_profiler
+    $ pip install tg-profiler
 
 Features 
 ========

@@ -10,17 +10,17 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 
 setup(
-    name='tg_profiler',
+    name='tg-profiler',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1.1',
+    version='0.1.2',
 
     description='A TurboGears 1 extension to profile applications in a lightweight manner, focusing on production profiling',
 
     # The project's main homepage.
-    url='https://github.com/sthima/tg_profiler',
+    url='https://github.com/sthima/tg-profiler',
 
     # Author details
     author='Matheus Marchini',
