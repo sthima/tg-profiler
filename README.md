@@ -1,7 +1,8 @@
 # TurboGears Profiler 
 
 TurboGears Profiler (tg_profiler) is a TurboGears 1 extension aiming to provide
-better profiling functionallities to TG applications. 
+better profiling options to TG applications. It focus on lightweight profiling
+which can be used in production environment, with very little overhead to the application.
 
 TurboGears Profiler is still a work in progress, and util the release of version 1.0.0, the API can
 be hardly changed, without backwards-compatibility.
@@ -12,7 +13,7 @@ be hardly changed, without backwards-compatibility.
 $ pip install tg_profiler
 ```
 
-# Functionallities:
+# Features 
 
 * Memory Snapshot saving as a CSV file
 
