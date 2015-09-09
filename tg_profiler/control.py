@@ -5,7 +5,7 @@
 
 
 import logging
-from tg_profiler import TGProfiler
+from tg_profiler.profilers import MemorySnapshotProfiler
 
 log = logging.getLogger(__name__)
 
@@ -22,8 +22,8 @@ class ControlClass(object):
 
         log.info("tg_profiler extension starting up.")
 
-        self.profiler = TGProfiler(
-            self.config.get("tg_profiler.log_path", "/var/log/tg_profiler/"),
+        self.profiler = MemorySnapshotProfiler(
+            self.config.get("tg_profiler.log_path", "tg_profiler/"),
             self.config.get("tg_profiler.interval", 60),
             self.config.get("tg_profiler.rotation", 10)
         )
