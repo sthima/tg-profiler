@@ -100,7 +100,7 @@ class MemorySnapshotProfiler(threading.Thread):
                 log.debug("Trying to profile the application")
                 l = time()
                 self.profile_and_log()
-                log.debug("Took: %d"%(time()-l))
+                log.debug("Took %d seconds"%(time()-l))
                 log.debug("Profiled successfully, waiting until next time")
             except Exception, e:
                 log.error(e)

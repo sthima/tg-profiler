@@ -5,7 +5,7 @@
 
 
 import logging
-from tg_profiler.profilers import MemorySnapshotProfiler
+from tg_profiler.profilers.memory_snapshot import MemorySnapshotProfiler
 
 log = logging.getLogger(__name__)
 
