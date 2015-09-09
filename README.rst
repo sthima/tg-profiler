@@ -25,7 +25,7 @@ License
 
 Licensed under the MIT license
 
----
+----
 
 MIT License (MIT)
 Copyright © 2015 Sthima, http://www.sthima.com.br
