@@ -1,7 +1,8 @@
 TurboGears Profiler
 ===================
 
-[![Build Status](https://travis-ci.org/sthima/tg-profiler.svg)](https://travis-ci.org/sthima/tg-profiler)
+.. image:: https://travis-ci.org/sthima/tg-profiler.svg?branch=master
+    :target: https://travis-ci.org/sthima/tg-profiler
 
 TurboGears Profiler (tg-profiler) is a TurboGears 1 extension aiming to provide
 better profiling options to TG applications. It focus on lightweight profiling
